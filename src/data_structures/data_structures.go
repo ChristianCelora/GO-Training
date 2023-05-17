@@ -27,11 +27,33 @@ func main(){
 
 
 	/**
+	* "make" in Golang is a keyword that is used to initialize only slices, maps, and channels.
+	* It does not return the pointer to the item. 
+	* It initializes the data in memory with zero value
+	*/
+
+	/**
 	* Slice
 	* Unlike arrays, slices are typed only by the elements they contain (not the number of elements). 
 	* To create an empty slice with non-zero length, use the builtin make
 	*/
-	// slice := make([]int)
+	var empty_slice []int
+	fmt.Println("empty_slice", empty_slice)
+	
+	slice := make([]int, 3)
+	slice[0] = 1
+	slice[1] = 2
+	slice[2] = 3
+	fmt.Println("slice", slice)
+	fmt.Println("slice sliced", slice[1:]) 
+	fmt.Println("slice sliced", slice[:2]) // upper index not included
+
+	slice = append(slice, 4, 5, 6)
+	fmt.Println("slice", slice)
+
+	var s1 []int
+	s1 = append(s1, 1, 2, 3)
+	fmt.Println("slice", s1, "l", len(s1), "c", cap(s1))
 
 	// Map
 
