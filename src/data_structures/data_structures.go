@@ -36,6 +36,11 @@ func main(){
 	* Slice
 	* Unlike arrays, slices are typed only by the elements they contain (not the number of elements). 
 	* To create an empty slice with non-zero length, use the builtin make
+	* 
+	* Internally slices composed by 3 parts:
+	* - a pointer to the subsequent array
+	* - a integer to indicate the current length of the slice
+	* - an integer to indicate the maxium capacity of the slice
 	*/
 	var empty_slice []int
 	fmt.Println("empty_slice", empty_slice)
@@ -45,9 +50,47 @@ func main(){
 	slice[1] = 2
 	slice[2] = 3
 	fmt.Println("slice", slice)
+	/**
+	* Slicing a slice will create a new slice 
+	* with the pointer pointing to the lower bound (if specified) and updated the length and capacity
+	* 
+	* 	new = slice[1:] (len: 3, cap: 3)
+	* 
+	*			[0]
+	* 	new -> 	[1]
+	*			[2]
+	*			[3]
+	*/
 	fmt.Println("slice sliced", slice[1:]) 
+	/**
+	* A slice can move the upper bound hight to increase his length, but not lower the lower bound
+	* [0, 1, 2, 3]
+	* slice[:2] 
+	* slice -> [0, 1]
+	* len: 2
+	* cap: 4
+	*/
 	fmt.Println("slice sliced", slice[:2]) // upper index not included
 
+	/**
+	* After a slice has been sliced all the indexed are updated
+	*/
+	smaller_slice := slice[1:]
+	// smaller_slice[0] === slice[1]
+	// smaller_slice[1] === slice[2]
+	fmt.Println("slice[0]", slice[0], "smaller_slice[0]", smaller_slice[0]) 
+	fmt.Println("slice[0]", slice[1], "smaller_slice[1]", smaller_slice[1]) 
+	fmt.Println("slice[0]", slice[2]) 
+
+	/**
+	* During an append a new array is created with len(slice) and the pointer is changed to the new array
+	* The old array will be managed by the garbage collector (if not used)
+	*
+	* 			[1, 2, 3]
+	* slice ->	[1, 2, 3, 4, 5, 6]
+	* len = 6
+	* cap = 6
+	*/
 	slice = append(slice, 4, 5, 6)
 	fmt.Println("slice", slice)
 
