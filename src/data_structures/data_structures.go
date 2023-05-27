@@ -131,4 +131,18 @@ func main(){
 	fmt.Println("non-existing key", prs2)
 
 	// Channel
+	/**
+	* Channels are the pipes that connect concurrent goroutines. 
+	* You can send values into channels from one goroutine and receive those values into another goroutine.
+	*/
+	var channel = make(chan string)
+
+	/** 
+	* We write "go" before the function to invoke it as a goroutine. 
+	* The function will run concurrently or asynchronously with the calling function.
+	*/
+	go func() { channel <- "ping" }()
+
+	fmt.Println("channel 1:", <- channel)
+	// fmt.Println("channel 2:", <- channel) // This return a deadlock because all goroutines are asleep
 }
