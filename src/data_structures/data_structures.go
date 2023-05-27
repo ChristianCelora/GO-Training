@@ -99,6 +99,36 @@ func main(){
 	fmt.Println("slice", s1, "l", len(s1), "c", cap(s1))
 
 	// Map
+	var my_map = make(map[int]string)
+	my_map[1] = "one"
+	my_map[2] = "two"
+	my_map[3] = "three"
+
+	fmt.Println("map", my_map)
+
+	delete(my_map, 2)
+
+	fmt.Println("map", my_map)
+
+	/**
+	* If the key doesn’t exist, the zero value of the value type is returned.
+	* Zero values list:
+	* boolean - false
+	* integer - 0
+	* string - ""
+	* pointer - nil
+	*/
+	fmt.Println(my_map[4])
+
+	/**
+	* The optional second return value when getting a value from a map indicates if the key was present in the map. 
+	* This can be used to disambiguate between missing keys and keys with zero values like 0 or ""
+	*/
+	_, prs1 := my_map[1]
+	fmt.Println("existing key", prs1)
+
+	_, prs2 := my_map[4]
+	fmt.Println("non-existing key", prs2)
 
 	// Channel
 }
