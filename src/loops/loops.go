@@ -34,4 +34,26 @@ func main(){
 		}
 		fmt.Println(a[i])
 	}
+
+	// ranges
+	a2 := [4]int{1, 2, 3, 4}
+	s := []int{1, 2, 3, 4}
+
+	fmt.Println("array")
+	for i, v := range a2 {
+		fmt.Println("[", i, "] = ", v)
+	}
+
+	fmt.Println("slice")
+	for i, v := range s {
+		fmt.Println("[", i, "] = ", v)
+	}
+
+	/**
+	* Range on strings iterates over Unicode code points. 
+	* The first value is the starting byte index of the rune and the second the rune itself
+	*/
+	for i, v := range "HELLO WORLD" {
+		fmt.Println(i, " -> ", v)
+	}
 }
