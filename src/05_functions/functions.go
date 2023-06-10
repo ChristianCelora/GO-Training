@@ -1,0 +1,55 @@
+package main
+
+import "fmt"
+
+func sum(a int, b int) int {
+	return a + b
+}
+
+func sumFloat(a float32, b float32) float32 {
+	return a + b
+}
+
+/** 
+* In golang there is no operator overloading. You can't define your own +.
+*/
+// func sumGeneric[T any](a T, b T) T {
+// 	return a + b
+// }
+
+func basicOps(a int, b int) (int, int, int, int) {
+	sum := a + b
+	diff := a - b
+	mul := a * b
+	div := a / b
+	return sum, diff, mul, div
+}
+
+func main() {
+	var a = 4
+	var b = 5
+	var c int
+	c = sum(a, b)
+	fmt.Println("sum: ", a, "+", b, "=", c)
+
+	var af float32 = 4.5
+	var bf float32 = 5.3
+	// c = sum(af, bf) // cannot use af (variable of type float32) as type int in argument to sum
+	var cf float32
+	cf = sumFloat(af, bf)
+	fmt.Println("sumFloat: ", af, "+", bf, "=", cf)
+
+	// c = sumGeneric(a, b)
+	// cf = sumGeneric(af, bf)
+	// fmt.Println("sumGeneric (int): ", a, "+", bf, "=", c)
+	// fmt.Println("sumGeneric (float32): ", a, "+", bf, "=", c)
+
+	sum, diff, mul, div := basicOps(a, b)
+	fmt.Println("values: ", a, b)
+	fmt.Println("sum: ", sum, "| diff:", diff, "| mul:", mul, "| div:", div)
+
+	// If you only want a subset of the returned values, use the blank identifier _.
+	// there can be multiple _
+	_, diff, mul, _ = basicOps(a, b)
+	fmt.Println("diff:", diff, "| mul:", mul)
+}
