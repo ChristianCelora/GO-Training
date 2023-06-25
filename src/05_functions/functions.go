@@ -51,6 +51,16 @@ func getArrayCursor() func(array []int) (int, error) {
 	}
 }
 
+func newYearCountdown(seconds int) int {
+	if (seconds <= 0) {
+		fmt.Println("Happy new year!")
+		return 0
+	}
+
+	fmt.Println(seconds)
+	return newYearCountdown(seconds-1)
+}
+
 func main() {
 	var a = 4
 	var b = 5
@@ -86,7 +96,8 @@ func main() {
 	sum2 = sumMultiple(values...)
 	fmt.Println("vals", values, ", sumMultiple:", sum2)
 
-	// a function can return an anonymus function (closure)
+	// Closures: functions can return an anonymus function
+	fmt.Println("array walk", values)
 	nextElem := getArrayCursor()
 	fmt.Println(nextElem(values))
 	fmt.Println(nextElem(values))
@@ -94,4 +105,8 @@ func main() {
 	fmt.Println(nextElem(values))
 	fmt.Println(nextElem(values))
 	fmt.Println(nextElem(values))
+
+	// Recursion
+	fmt.Println("New Year Countdown:")
+	newYearCountdown(10)
 }
