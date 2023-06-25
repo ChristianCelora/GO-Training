@@ -10,6 +10,14 @@ func sumFloat(a float32, b float32) float32 {
 	return a + b
 }
 
+func sumMultiple(nums...int) (int) {
+	sum := 0
+	for _, x := range nums {
+		sum += x
+	}
+	return sum
+}
+
 /** 
 * In golang there is no operator overloading. You can't define your own +.
 */
@@ -52,4 +60,11 @@ func main() {
 	// there can be multiple _
 	_, diff, mul, _ = basicOps(a, b)
 	fmt.Println("diff:", diff, "| mul:", mul)
+
+	var sum2 int
+	sum2 = sumMultiple(1, 2, 3, 4)
+	fmt.Println("1+2+3+4", ", sumMultiple:", sum2)
+	values := [] int{1, 2, 3, 4}
+	sum2 = sumMultiple(values...)
+	fmt.Println("vals", values, ", sumMultiple:", sum2)
 }
