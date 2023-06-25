@@ -1,6 +1,13 @@
 package main
 
+/**
+* import(
+*   "fmt"
+*   "errors"
+* )
+*/
 import "fmt"
+import "errors"
 
 func sum(a int, b int) int {
 	return a + b
@@ -31,6 +38,17 @@ func basicOps(a int, b int) (int, int, int, int) {
 	mul := a * b
 	div := a / b
 	return sum, diff, mul, div
+}
+
+func getArrayCursor() func(array []int) (int, error) {
+	i := -1
+	return func(array []int) (int, error) {
+		i++
+		if (i >= len(array)) {
+			return -1, errors.New("array out of bounds")
+		}
+		return array[i], nil
+	}
 }
 
 func main() {
@@ -67,4 +85,13 @@ func main() {
 	values := [] int{1, 2, 3, 4}
 	sum2 = sumMultiple(values...)
 	fmt.Println("vals", values, ", sumMultiple:", sum2)
+
+	// a function can return an anonymus function (closure)
+	nextElem := getArrayCursor()
+	fmt.Println(nextElem(values))
+	fmt.Println(nextElem(values))
+	fmt.Println(nextElem(values))
+	fmt.Println(nextElem(values))
+	fmt.Println(nextElem(values))
+	fmt.Println(nextElem(values))
 }
