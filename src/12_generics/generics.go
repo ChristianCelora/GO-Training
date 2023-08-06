@@ -54,12 +54,18 @@ func main() {
 		3: "three",
 	}
 
+	/**
+	* Note that we don’t have to specify the types, the compiler infers them automatically.
+	*/
 	fmt.Println(getKeys(m))
+	// we could also specify them explicitly
+	fmt.Println(getKeys[int, string](m))
 
 	// Linked list 
 	head := Node[string]{
 		value: "abc",
 	}
+
 	head.push("def").push("ghi").push("jkl")
 
 	linked_list := List[string]{
