@@ -102,4 +102,49 @@ func main() {
 	default:
 		fmt.Println("no activity")
 	}
+
+	/**
+	* Closing a channel indicates that no more values will be sent on it. 
+	* This can be useful to communicate completion to the channel’s receivers.
+	*/
+	jobs := make(chan int, 5)
+	done := make(chan bool)
+
+	go func() {
+		for {
+			// open value will be false if jobs has been closed and all values in the channel have already been received.
+			j, open := <-jobs
+			if open {
+				fmt.Println("execute job", j)
+			} else {
+				fmt.Println("all jobs completed or channel closed")
+				done <- true 
+				return
+			}
+		}
+	} ()
+
+	for i := 0; i < 3; i++ {
+		fmt.Println("add job", i)
+		jobs <- i
+	}
+	close(jobs) // close channel
+	<-done // wait for all job completion
+	// Note: Only the sender should close a channel, never the receiver. Sending on a closed channel will cause a panic.
+
+	// It is also possible to range over closed channels
+	queue := make(chan string, 2)
+    queue <- "one"
+    queue <- "two"
+	/**
+	* Note: Channels aren't like files; you don't usually need to close them. 
+	* Closing is only necessary when the receiver must be told there are no more values coming, such as to terminate a range loop.
+	*/
+    close(queue)
+	// This range iterates over each element as it’s received from queue. 
+	// Because we closed the channel above, the iteration terminates after receiving the 2 elements.
+	fmt.Println("Queue:")
+    for elem := range queue {
+        fmt.Println(elem)
+    }
 }
