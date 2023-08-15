@@ -39,8 +39,8 @@ func main() {
 	/**
 	* Buffered channels accept a limited number of values without a corresponding receiver for those values.
 	*/
-
 	buffered_channel := make(chan string, 2)
+	
 	/**
 	* Because this channel is buffered, we can send these values into the channel without a corresponding concurrent receive.
 	* Notice: i am not using a goroutine for these functions. 
