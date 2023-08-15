@@ -16,6 +16,15 @@ func wait(done chan bool) {
 	done <- true
 }
 
+func ping(out_channel chan<- string) {
+	out_channel <- "ping"
+}
+
+func pong(in_channel <-chan string, out_channel chan<- string) {
+	message := <-in_channel
+	out_channel <- message + " pong"
+}
+
 func main() {
 	/**
 	* Channels are the pipes that connect concurrent goroutines. 
@@ -42,6 +51,23 @@ func main() {
 	// These are syncronous, so i will recevie in order. The first print ha the possibility to start with "world".
     fmt.Println(<-buffered_channel)
     fmt.Println(<-buffered_channel)
+
+	/** 
+	* Channel Directions
+	* 
+	* 
+	* When using channels as function parameters, you can specify if a channel is meant to only send or receive values. 
+	* This specificity increases the type-safety of the program.
+	*/
+	ping_chan := make(chan string, 1)
+	pong_chan := make(chan string, 1)
+	ping(ping_chan)
+	pong(ping_chan, pong_chan)
+	fmt.Println(<-pong_chan)
+
+	in_chan := make(chan<- string, 1)
+	in_chan <- "it only workds this way"
+	// fmt.Println(<-in_chan) // this will throw: "invalid operation: cannot receive from send-only channel in_chan"
 
 	/** 
 	* Channel Synchronization
