@@ -66,4 +66,51 @@ func main() {
 		// Block until the WaitGroup counter goes back to 0; all the workers notified they’re done.
 		wg.Wait()
 	}
+	// Note: The order of workers starting up and finishing is likely to be different for each invocation.
+
+	/**
+	* Rate limiting is an important mechanism for controlling resource utilization and maintaining quality of service
+	*/
+	requests := make(chan int, 5)
+	for i := 0; i < 5; i++ {
+		requests <- i
+	}
+	close(requests)
+
+	limiter := time.Tick(time.Millisecond * 200)
+
+	for req := range requests {
+		<-limiter // limit a request each 200ms
+		fmt.Println("request", req, time.Now())
+	}
+
+	/**
+	* We may want to allow short bursts of requests in our rate limiting scheme while preserving the overall rate limit. 
+	* We can accomplish this by buffering our limiter channel. 
+	* This burstLimiter channel will allow bursts of up to 3 events
+	*/
+	burstLimiter := make(chan time.Time, 3)
+	for i := 0; i < 3; i++ {
+		// the first 3 signals from the channel are received instantly. The other will be set with a ticker of 200ms
+		// the value time.Now is irrelevant (can be any time.Time value)
+		burstLimiter <- time.Now()
+	}
+
+	go func() {
+		for t := range time.Tick(200 * time.Millisecond) {
+			burstLimiter <- t
+		}
+	}()
+
+	burstRequests := make(chan int, 5)
+	for i := 0; i < 5; i++ {
+		burstRequests <- i
+	}
+	close(burstRequests)
+
+	// Now simulate 5 more incoming requests. The first 3 of these will benefit from the burst capability of burstLimiter.
+	for req := range burstRequests {
+        <-burstLimiter
+        fmt.Println("request", req, time.Now())
+    }
 }
