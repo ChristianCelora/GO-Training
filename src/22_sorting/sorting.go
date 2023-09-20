@@ -2,8 +2,14 @@ package main
 
 import (
 	"fmt"
+	"cmp"
 	"slices"
 )
+
+type Person struct {
+	name string
+	age int
+}
 
 /**
  * Go’s slices package implements sorting for builtins and user-defined types
@@ -21,4 +27,18 @@ func main() {
 	fmt.Println("sorted", slices.IsSorted(numbers), "|", numbers)
 	slices.Sort(numbers)
 	fmt.Println("sorted", slices.IsSorted(numbers), "|", numbers)
+
+	// We can sort by a custom function using slices.SortFunc
+	// cmp.Compare is helpful for this
+	age_sort := func (a, b Person) int {
+		return cmp.Compare(a.age, b.age)
+	}
+	persons := []Person{
+		Person{name: "aldo", age: 22},
+		Person{name: "mario", age: 18},
+		Person{name: "giovanni", age: 33},
+		Person{name: "maria", age: 25},
+	}
+	slices.SortFunc(persons, age_sort)
+	fmt.Println("Contacts sorted", persons)
 }
