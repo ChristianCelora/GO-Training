@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"errors"
+	"fmt"
 )
 
 func main() {
@@ -15,4 +16,5 @@ func main() {
 		*/
 		panic(err)
 	}
+	fmt.Println("This will never be printed")
 }
